@@ -1,0 +1,73 @@
+<html>
+<link rel="stylesheet" href="index.css">
+<body>
+    <script src="calcs.js">
+	</script>
+	<table class="inlineTable" id="main">
+		<tr class="tr_title">
+			<th></th>
+			<th>Air Stream 1</th>
+			<th>Air Stream 2</th>
+			<th>Mixed air</th>
+		</tr>
+		<tr>
+			<td class="tbl_inputs">CFM</td>
+			<td class="input"><input type="text" id="cfm_1" onchange="go()" tabindex="1" size="5"></td>
+			<td class="input"><input type="text" id="cfm_2" onchange="go()" tabindex="4" size="5"></td>
+			<td id="cfm_m"></td>			
+		</tr>
+		<tr>
+			<td class="tbl_inputs">Dry bulb</td>            
+            <td class="input"><input type="text" id="db_1" onchange="go()" tabindex="2" size="5"></td>
+            <td class="input"><input type="text" id="db_2" onchange="go()" tabindex="5" size="5"></td>
+            <td id="db_m"></td>
+		</tr>
+		<tr>
+			<td class="tbl_inputs">Wet bulb</td>
+            <td class="input"><input type="text" id="wb_1" onchange="go()" tabindex="3" size="5"></td>
+            <td class="input"><input type="text" id="wb_2" onchange="go()" tabindex="6" size="5"></td>
+            <td id="wb_m"></td>
+		</tr>
+		<tr>
+			<td class="tbl_inputs">Altitude</td>
+            <td class="input"><input type="text" id="elev" onchange="go()" value="1000" tabindex="7" size="5" maxlength="5"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+
+		</tr>
+		<tr></tr>
+		<tr class="tr_title">
+			<th colspan="4">Outputs</th>
+		</tr>
+		<tr>
+			<td class="tbl_inputs">Enthalpy</td>
+            <td id="h_1"></td>
+            <td id="h_2"></td>
+            <td id="h_m"></td>
+		</tr>
+	</table>
+	<table class="inlineTable" id="heating">
+		<tr>
+			<td class="tbl_heating">Heating</td>
+		</tr>
+	</table>
+    <br>
+    <table class="t_output" id="modulus">
+        <tr class="tr_title">
+			
+			<th colspan="2">Modulus</th>
+		</tr>
+		<tr>
+			<td class="tbl_inputs">CFM</td>
+			<td class="input"><input type="text" id="mod" tabindex="8" size="5"></td>
+		</tr>
+    </table>
+	
+	<table  class="t_output" id="output">
+		<tr>
+            <td id="mod_res"><b>Output:</b></td>
+        </tr>
+	</table>
+	
+</body>
+</html>

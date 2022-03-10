@@ -1,0 +1,55 @@
+body{
+	
+	background-color: white;
+}
+
+#cfm_1 {
+    text-decoration-color: aqua;    
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.tr_grey, .tr_title {
+    background-color: lightgray;
+}
+
+table {
+   width: 50%;
+}
+
+.inputs {
+    text-align: right;
+}
+
+.tbl_inputs {
+    text-align: right;
+}
+
+.input {
+    text-align: center;     
+}
+
+.black {
+    background-color: darkgray;
+}
+
+#main {
+    width: 50%;
+    border-style: solid;
+    border: 1px black solid;
+}
+
+table, th, td {
+    border: 1px black solid;
+    border-collapse: collapse;
+}
+
+.t_output {
+    width: 25%;
+}
+
+.inlineTable {
+    display: inline-block;
+}

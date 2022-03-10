@@ -1,0 +1,154 @@
+
+'-------------------------------------------------------------------------------
+' Calculate the Logarithm of a number to the base 10
+'
+Function log10(number)
+  log10 = Log(number) / Log(10#)
+End Function
+
+'-------------------------------------------------------------------------------
+' Calculate vapor pressure at saturation given dry bulb temp, wet bulb temp, and elevation
+'
+Function psychro_pvs(temp)
+ a1 = -7.90298
+ a2 = 5.02808
+ a3 = -0.00000013816
+ a4 = 11.344
+ a5 = 0.0081328
+ a6 = -3.49149
+ b1 = -9.09718
+ b2 = -3.56654
+ b3 = 0.876793
+ b4 = 0.0060273
+ ta = (temp + 459.688) / 1.8
+ If ta > 273.16 Then
+   z = 373.16 / ta
+   p1 = (z - 1) * a1
+   p2 = log10(z) * a2
+   p3 = ((10 ^ ((1 - (1 / z)) * a4)) - 1) * a3
+   p4 = ((10 ^ (a6 * (z - 1))) - 1) * a5
+  Else
+   z = 273.16 / ta
+   p1 = b1 * (z - 1)
+   p2 = b2 * log10(z)
+   p3 = b3 * (1 - (1 / z))
+   p4 = log10(b4)
+ End If
+ psychro_pvs = 29.921 * (10 ^ (p1 + p2 + p3 + p4))
+End Function
+
+'-------------------------------------------------------------------------------
+' Calculate Vapor Pressure given dry bulb temp, wet bulb temp, and elevation
+'
+Function psychro_pv1(db, wb, atm)
+ pvp = psychro_pvs(wb)
+ ws = (pvp / (atm - pvp)) * 0.62198
+ If wb <= 32# Then
+   pv1 = (pvp - 0.0005704) * atm * ((db - wb) / 1.8)
+ Else
+   hl = 1093.049 + (0.441 * (db - wb))
+   ch = 0.24 + (0.441 * ws)
+   wh = ws - (ch * (db - wb) / hl)
+   psychro_pv1 = atm * (wh / (0.62198 + wh))
+ End If
+ 
+End Function
+'-------------------------------------------------------------------------------
+'Calculate dew point temp. given Vapor Pressure
+'
+Function psychro_dp(this_pv)
+  y = Log(this_pv)
+  If this_pv < 0.18036 Then
+    psychro_dp = 71.98 + (24.873 * y) + (0.8927 * y ^ 2)
+   Else
+    psychro_dp = 79.047 + (30.579 * y) + (1.8893 * y ^ 2)
+  End If
+End Function
+
+'-------------------------------------------------------------------------------
+' Calculate Enthalpy given dry bulb temp, wet bulb temp, and elevation
+'
+Function psychro_h(db, wb, atm)
+ psychro_h = (db * 0.24) + ((1061 + (0.444 * db)) * (psychro_w(db, wb, atm)))
+End Function
+
+'-------------------------------------------------------------------------------
+' Calculate relative humidity given dry bulb temp, wet bulb temp, and elevation
+'
+Function psychro_rh(db, wb, atm)
+  psychro_rh = 100 * psychro_pv1(db, wb, atm) / psychro_pvs(db)
+End Function
+
+'-------------------------------------------------------------------------------
+' Calculate Specific Volume given dry bulb temp, wet bulb temp, and elevation
+'
+Function psychro_v(db, wb, atm)
+  psychro_v = (0.754 * (db + 459.7) * (1 + (7000 * psychro_w(db, wb, atm) / 4360))) / atm
+End Function
+
+'-------------------------------------------------------------------------------
+' Calculate Humidity Ratio given dry bulb temp, wet bulb temp, and elevation
+'
+Function psychro_w(db, wb, atm)
+  vp = psychro_pv1(db, wb, atm)
+  psychro_w = 0.622 * vp / (atm - vp)
+End Function
+
+'-------------------------------------------------------------------------------
+' Calculate Humidity Ratio given dry bulb temp, relative humidity, and elevation
+'
+Function psychro_wrh(db, rh, atm)
+  wsat = psychro_pvs(db)
+  wtemp = 0.62198 * (wsat / (atm - wsat))
+  psychro_wrh = (rh / 100) * wtemp
+End Function
+
+'-------------------------------------------------------------------------------
+' Calculate Atmospheric pressure given elevation
+'
+Function psychro_atm(elev)
+  Dim el(21), press(21)
+    'Altitude    Press.
+    el(1) = -1000:  press(1) = 31.02
+    el(2) = -500:   press(2) = 30.47
+    el(3) = 0:      press(3) = 29.921
+    el(4) = 500:    press(4) = 29.38
+    el(5) = 1000:   press(5) = 28.86
+    el(6) = 2000:   press(6) = 27.82
+    el(7) = 3000:   press(7) = 26.82
+    el(8) = 4000:   press(8) = 25.82
+    el(9) = 5000:   press(9) = 24.9
+    el(10) = 6000:  press(10) = 23.98
+    el(11) = 7000:  press(11) = 23.09
+    el(12) = 8000:  press(12) = 22.22
+    el(13) = 9000:  press(13) = 21.39
+    el(14) = 10000: press(14) = 20.48
+    el(15) = 15000: press(15) = 16.89
+    el(16) = 20000: press(16) = 13.76
+    el(17) = 30000: press(17) = 8.9
+    el(18) = 40000: press(18) = 5.56
+    el(19) = 50000: press(19) = 3.44
+    el(20) = 60000: press(20) = 2.14
+    i = 1
+    Do While elev > el(i)
+        i = i + 1
+    Loop
+    psychro_atm = press(i)
+End Function
+
+
+Function psychro_wb(db, h, atm)
+    wbtest = db
+    Do
+      htest = 0.24 * wbtest + (1061 + 0.444 * wbtest) * psychro_w(wbtest, wbtest, atm)
+      wbtest = wbtest - 1
+    Loop Until htest < h
+    wbtest = wbtest + 2
+    Do
+      htest = 0.24 * wbtest + (1061 + 0.444 * wbtest) * psychro_w(wbtest, wbtest, atm)
+      wbtest = wbtest - 0.1
+    Loop Until htest < h
+    wbtest = wbtest + 0.1
+    psychro_wb = wbtest
+End Function
+
