@@ -69,8 +69,8 @@ def psychro_rh(db, wb, atm):
 def psychro_v(db, wb, atm):
     # Calculate Specific Volume given dry bulb temp, wet bulb temp,
     # and elevation
-    return (0.754 * (db + 459.7) *\
-        (1 + (7000 * psychro_w(db, wb, atm) / 4360))) / atm
+    return (0.754 * (db + 459.7) *
+            (1 + (7000 * psychro_w(db, wb, atm) / 4360))) / atm
 
 
 def psychro_w(db, wb, atm):
