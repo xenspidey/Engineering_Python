@@ -20,8 +20,8 @@ def psychro_pvs(temp):
         z = 373.16 / ta
         p1 = (z - 1) * a1
         p2 = math.log10(z) * a2
-        p3 = ((10 ^ ((1 - (1 / z)) * a4)) - 1) * a3
-        p4 = ((10 ^ (a6 * (z - 1))) - 1) * a5
+        p3 = ((10 ** ((1 - (1 / z)) * a4)) - 1) * a3
+        p4 = ((10 ** (a6 * (z - 1))) - 1) * a5
     else:
         z = 273.16 / ta
         p1 = b1 * (z - 1)
@@ -29,7 +29,7 @@ def psychro_pvs(temp):
         p3 = b3 * (1 - (1 / z))
         p4 = math.log10(b4)
 
-    return 29.921 * (10 ^ (p1 + p2 + p3 + p4))
+    return 29.921 * (10 ** (p1 + p2 + p3 + p4))
 
 
 def psychro_pv1(db, wb, atm):
@@ -48,11 +48,11 @@ def psychro_pv1(db, wb, atm):
 
 def psychro_dp(this_pv):
     # Calculate dew point temp. given Vapor Pressure
-    y = math.Log(this_pv)
+    y = math.log(this_pv)
     if this_pv < 0.18036:
-        return 71.98 + (24.873 * y) + (0.8927 * y ^ 2)
+        return 71.98 + (24.873 * y) + (0.8927 * y ** 2)
     else:
-        return 79.047 + (30.579 * y) + (1.8893 * y ^ 2)
+        return 79.047 + (30.579 * y) + (1.8893 * y ** 2)
 
 
 def psychro_h(db, wb, atm):
