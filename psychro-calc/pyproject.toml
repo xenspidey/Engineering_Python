@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "xenspidey.psychro_calc"
+version = "0.0.1"
+description = "Psychro Calculations"
+authors = ["Xenspidey <xenspidey@gmail.com>"]
+packages = [
+    { include = "xenspidey" },
+]
+
+[tool.poetry.dependencies]
+python = "~3.8"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+flake8-bugbear = "^22.3.23"
+flake8-fixme = "^1.1.1"
+safety = "^1.10.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.6"]
+build-backend = "poetry.core.masonry.api"
